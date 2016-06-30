@@ -1,0 +1,35 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+
+[OSEv3:vars]
+ansible_ssh_user=root
+debug_level=2
+deployment_type=openshift-enterprise
+
+# Allow all auth
+openshift_master_identity_providers=[{'name': 'allow_all', 'login': 'true', 'challenge': 'true', 'kind': 'AllowAllPasswordIdentityProvider'}]
+
+
+#openshift_master_cluster_method=native
+#openshift_master_cluster_hostname=openshift-ansible.test.example.com
+#openshift_master_cluster_public_hostname=openshift-ansible.test.example.com
+#openshift_master_default_subdomain=apps.test.example.com
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+
+# host group for masters
+[masters]
+ose3-master[1:3]-ansible.test.example.com
+
+[etcd]
+ose3-etcd[1:3]-ansible.test.example.com
+
+[lb]
+ose3-lb-ansible.test.example.com
+
+[nodes]
+ose3-master[1:3]-ansible.test.example.com
+ose3-node[1:2]-ansible.test.example.com openshift_node_labels="{'region': 'primary', 'zone': 'default'}"
